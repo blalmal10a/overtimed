@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tilte/selectedIndex.dart';
-import 'package:tilte/views/pages/home_page.dart';
-import 'package:tilte/views/pages/add_page.dart';
+import '/selectedIndex.dart';
+import '/views/pages/home_page.dart';
+import '/views/pages/add_page.dart';
 
 class AuthenticatedView extends StatelessWidget {
   final List<Widget> _pages = [

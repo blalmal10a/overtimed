@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tilte/controllers/global_controller.dart';
-import 'package:tilte/selectedIndex.dart';
+import '/controllers/global_controller.dart';
+import '/selectedIndex.dart';
 
 class AddPage extends StatelessWidget {
   @override

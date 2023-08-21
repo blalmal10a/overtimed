@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tilte/controllers/user_authentication.dart';
+import '/controllers/user_authentication.dart';
 
 class UnauthenticatedView extends StatelessWidget {
   const UnauthenticatedView({super.key});

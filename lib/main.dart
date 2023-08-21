@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
-import 'package:tilte/controllers/user_authentication.dart';
-import 'package:tilte/views/unauthenticated_view.dart';
+import '/controllers/user_authentication.dart';
+import '/views/unauthenticated_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
