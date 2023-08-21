@@ -45,6 +45,11 @@ dependencies:
   cloud_firestore: ^4.8.4
   intl: ^0.18.1
 
+
+  google_sign_in: ^6.1.4
+  googleapis_auth: ^1.4.1
+  googleapis: ^11.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
