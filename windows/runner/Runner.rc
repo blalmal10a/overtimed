@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "tilte" "\0"
+            VALUE "FileDescription", "overtimed" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tilte" "\0"
+            VALUE "InternalName", "overtimed" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tilte.exe" "\0"
-            VALUE "ProductName", "tilte" "\0"
+            VALUE "OriginalFilename", "overtimed.exe" "\0"
+            VALUE "ProductName", "overtimed" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
