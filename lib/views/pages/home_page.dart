@@ -1,8 +1,10 @@
+import 'dart:js_interop';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:overtimed/controllers/user_authentication.dart';
 
 class HomePage extends StatelessWidget {
   final isTrashed;
@@ -17,8 +19,10 @@ class HomePage extends StatelessWidget {
     final startOfMonth = DateTime(year, nthMonth, 1);
     final endOfMonth =
         DateTime(year, nthMonth + 1, 1).subtract(Duration(days: 1));
-    var collectionName = 'items';
-    if (isTrashed == true) collectionName = 'trash';
+    var collectionName = 'trash';
+    if (authUser.isDefinedAndNotNull && isTrashed != true) {
+      collectionName = "${authUser.displayName}_${authUser.id}";
+    }
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection(collectionName)

@@ -1,6 +1,9 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:overtimed/controllers/user_authentication.dart';
 import '/controllers/global_controller.dart';
 import '/selectedIndex.dart';
 
@@ -27,8 +30,14 @@ class AddPage extends StatelessWidget {
     var selectedDate = DateTime.now().obs;
     void addItemToFirestore(Map<String, dynamic> item, secretText) async {
       try {
+        // var collectionName = 'trash';
+        // if (authUser.isDefinedAndNotNull) {
+        //   collectionName = "${authUser.displayName}_${authUser.id}";
+        // }
         var collectionName = 'trash';
-        if (secretText.text != '.') collectionName = 'items';
+        if (authUser.isDefinedAndNotNull) {
+          collectionName = "${authUser.displayName}_${authUser.id}";
+        }
         CollectionReference items =
             FirebaseFirestore.instance.collection(collectionName);
 
