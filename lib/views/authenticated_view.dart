@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:overtimed/controllers/user_authentication.dart';
+import 'package:overtimed/helpers/authentication_helper.dart';
 import '/selectedIndex.dart';
 import '/views/pages/home_page.dart';
 import '/views/pages/add_page.dart';
@@ -44,6 +46,25 @@ class AuthenticatedView extends StatelessWidget {
                     label: Text('Add'),
                   ),
                 ],
+                trailing: Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: IconButton(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Colors.orange,
+                          ),
+                          onPressed: () {
+                            print('logout');
+                            logoutUser();
+                            print('logout');
+                            is_authenticated.value = false;
+                          }),
+                    ),
+                  ),
+                ),
               )),
         ],
       ),

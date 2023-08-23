@@ -3,37 +3,33 @@ import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:overtimed/controllers/user_authentication.dart';
 import '/controllers/global_controller.dart';
 import '/selectedIndex.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class AddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final overtimeProjectName = TextEditingController(text: '');
 
-    TimeOfDay currentTime = TimeOfDay.now();
+    // TimeOfDay currentTime = TimeOfDay.now();
+    final Rx<DateTime?> startTime =
+        DateTime.now().subtract(Duration(hours: 1)).obs;
+    final Rx<DateTime?> endTime = DateTime.now().obs;
 
-    // Subtract 30 minutes
-    int newMinute = currentTime.minute - 30;
-    int newHour = currentTime.hour;
-    final secretText = TextEditingController(text: '.');
+    // if (newMinute < 0) {
+    //   newMinute += 60;
+    //   newHour--;
+    // }
 
-    if (newMinute < 0) {
-      newMinute += 60;
-      newHour--;
-    }
+    // var startTime = TimeOfDay(hour: newHour, minute: newMinute).obs;
 
-    var startTime = TimeOfDay(hour: newHour, minute: newMinute).obs;
-
-    var endTime = TimeOfDay.now().obs;
-    var selectedDate = DateTime.now().obs;
-    void addItemToFirestore(Map<String, dynamic> item, secretText) async {
+    // var endTime = TimeOfDay.now().obs;
+    // var selectedDate = DateTime.now().obs;
+    void addItemToFirestore(Map<String, dynamic> item) async {
       try {
-        // var collectionName = 'trash';
-        // if (authUser.isDefinedAndNotNull) {
-        //   collectionName = "${authUser.displayName}_${authUser.id}";
-        // }
         var collectionName = 'trash';
         if (authUser.isDefinedAndNotNull) {
           collectionName = "${authUser.displayName}_${authUser.id}";
@@ -61,30 +57,17 @@ class AddPage extends StatelessWidget {
                     label: Text('Project name'),
                   ),
                 ),
-                CalendarDatePicker(
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2022),
-                  lastDate: DateTime.now(),
-                  onDateChanged: (data) => {
-                    if (data != null)
-                      {
-                        selectedDate.value = data,
-                      }
-                  },
+                SizedBox(
+                  height: 50,
                 ),
-                // start of time picker
+
                 Row(
                   children: [
                     Expanded(
                       child: InkWell(
                         onTap: () async {
-                          await showTimePicker(
-                            context: context,
-                            initialTime: startTime.value,
-                            initialEntryMode: TimePickerEntryMode.inputOnly,
-                          ).then((value) => {
-                                if (value != null) startTime.value = value,
-                              });
+                          startTime.value =
+                              await showOmniDateTimePicker(context: context);
                         },
                         child: InputDecorator(
                           decoration: InputDecoration(
@@ -93,7 +76,8 @@ class AddPage extends StatelessWidget {
                             border: OutlineInputBorder(),
                           ),
                           child: Obx(() => Text(
-                                startTime.value.format(context),
+                                DateFormat('dd-MMM-yyyy hh:mm a')
+                                    .format(startTime.value ?? DateTime.now()),
                                 style: TextStyle(fontSize: 16),
                               )),
                         ),
@@ -105,16 +89,8 @@ class AddPage extends StatelessWidget {
                     Expanded(
                         child: InkWell(
                       onTap: () async {
-                        await showTimePicker(
-                          context: context,
-                          initialTime: endTime.value,
-                          initialEntryMode: TimePickerEntryMode.inputOnly,
-                        ).then((value) => {
-                              if (value != null)
-                                {
-                                  endTime.value = value,
-                                }
-                            });
+                        endTime.value =
+                            await showOmniDateTimePicker(context: context);
                       },
                       child: InputDecorator(
                         decoration: InputDecoration(
@@ -123,7 +99,8 @@ class AddPage extends StatelessWidget {
                           border: OutlineInputBorder(),
                         ),
                         child: Obx(() => Text(
-                              endTime.value.format(context),
+                              DateFormat('dd-MMM-yyyy hh:mm a')
+                                  .format(endTime.value ?? DateTime.now()),
                               style: TextStyle(fontSize: 16),
                             )),
                       ),
@@ -153,34 +130,20 @@ class AddPage extends StatelessWidget {
                         return;
                       }
 
+                      // var item = {
+                      //   'name': overtimeProjectName.text,
+                      //   'date': selectedDate.value,
+                      // };
                       var item = {
                         'name': overtimeProjectName.text,
-                        'date': selectedDate.value,
+                        'date': DateTime.now(),
+                        'start_time': startTime.value,
+                        'end_time': endTime.value,
                       };
 
-                      item['start_time'] = Timestamp.fromDate(
-                        DateTime(
-                            DateTime.now().year,
-                            DateTime.now().month,
-                            DateTime.now().day,
-                            startTime.value.hour,
-                            startTime.value.minute),
-                      );
+                      addItemToFirestore(item);
 
-                      item['end_time'] = Timestamp.fromDate(
-                        DateTime(
-                            DateTime.now().year,
-                            DateTime.now().month,
-                            DateTime.now().day,
-                            endTime.value.hour,
-                            endTime.value.minute),
-                      );
-
-                      addItemToFirestore(item, secretText);
-                      if (secretText.text == '.')
-                        selectedIndex.state.value = 1;
-                      else
-                        selectedIndex.state.value = 0;
+                      selectedIndex.state.value = 0;
                     },
                   ),
                 ),
@@ -190,23 +153,23 @@ class AddPage extends StatelessWidget {
             ),
           ),
         ),
-        MouseRegion(
-          cursor: SystemMouseCursors
-              .grab, // Change this cursor to the desired cursor type
-          child: TextField(
-            controller: secretText,
-            decoration: InputDecoration(
-              constraints: BoxConstraints(maxWidth: 5),
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              contentPadding: EdgeInsets.all(0), // Remove any padding
-            ),
-            cursorColor: Colors.white,
-          ),
-        )
+        // MouseRegion(
+        //   cursor: SystemMouseCursors
+        //       .grab, // Change this cursor to the desired cursor type
+        //   child: TextField(
+        //     controller: secretText,
+        //     decoration: InputDecoration(
+        //       constraints: BoxConstraints(maxWidth: 5),
+        //       border: InputBorder.none,
+        //       focusedBorder: InputBorder.none,
+        //       enabledBorder: InputBorder.none,
+        //       errorBorder: InputBorder.none,
+        //       disabledBorder: InputBorder.none,
+        //       contentPadding: EdgeInsets.all(0), // Remove any padding
+        //     ),
+        //     cursorColor: Colors.white,
+        //   ),
+        // )
       ]),
     );
   }

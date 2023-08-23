@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 import 'package:overtimed/helpers/authentication_helper.dart';
 import 'package:overtimed/views/authenticated_view.dart';
 
@@ -12,8 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final firebasedata = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
-
-  await authenticateUser();
+  try {
+    await authenticateUser();
+  } catch (e) {}
 
   runApp(MyApp());
 }
@@ -23,8 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:
-          is_authenticated.value ? AuthenticatedView() : UnauthenticatedView(),
+      home: Obx(() =>
+          is_authenticated.value ? AuthenticatedView() : UnauthenticatedView()),
     );
   }
 }

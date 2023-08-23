@@ -49,6 +49,7 @@ dependencies:
   google_sign_in: ^6.1.4
   googleapis_auth: ^1.4.1
   googleapis: ^11.4.0
+  omni_datetime_picker: ^1.0.8
 
 dev_dependencies:
   flutter_test:

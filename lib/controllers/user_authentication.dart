@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> authenticateUser() async {
     'https://www.googleapis.com/auth/spreadsheets'
   ];
   signIn = GoogleSignIn.standard(scopes: scopeList);
-
+  // final account = await signIn.signInSilently();
   final account = await signIn.signInSilently() ?? await signIn.signIn();
 
   if (account == null) {
@@ -63,4 +63,10 @@ Future<Map<String, dynamic>> authenticateUser() async {
     'account': account,
     'signIn': signIn,
   };
+}
+
+logoutUser() async {
+  signIn.disconnect();
+
+  signIn.signOut();
 }
