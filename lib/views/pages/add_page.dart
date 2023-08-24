@@ -19,15 +19,6 @@ class AddPage extends StatelessWidget {
         DateTime.now().subtract(Duration(hours: 1)).obs;
     final Rx<DateTime?> endTime = DateTime.now().obs;
 
-    // if (newMinute < 0) {
-    //   newMinute += 60;
-    //   newHour--;
-    // }
-
-    // var startTime = TimeOfDay(hour: newHour, minute: newMinute).obs;
-
-    // var endTime = TimeOfDay.now().obs;
-    // var selectedDate = DateTime.now().obs;
     void addItemToFirestore(Map<String, dynamic> item) async {
       try {
         var collectionName = 'trash';
@@ -67,7 +58,8 @@ class AddPage extends StatelessWidget {
                       child: InkWell(
                         onTap: () async {
                           startTime.value =
-                              await showOmniDateTimePicker(context: context);
+                              await showOmniDateTimePicker(context: context) ??
+                                  startTime.value;
                         },
                         child: InputDecorator(
                           decoration: InputDecoration(
@@ -90,7 +82,8 @@ class AddPage extends StatelessWidget {
                         child: InkWell(
                       onTap: () async {
                         endTime.value =
-                            await showOmniDateTimePicker(context: context);
+                            await showOmniDateTimePicker(context: context) ??
+                                endTime.value;
                       },
                       child: InputDecorator(
                         decoration: InputDecoration(

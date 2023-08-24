@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:overtimed/helpers/authentication_helper.dart';
 import 'package:overtimed/views/authenticated_view.dart';
-
-import '/controllers/user_authentication.dart';
 import '/views/unauthenticated_view.dart';
 import 'firebase_options.dart';
 
@@ -14,7 +12,7 @@ void main() async {
   final firebasedata = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
   try {
-    await authenticateUser();
+    // await authenticateUser();
   } catch (e) {}
 
   runApp(MyApp());
