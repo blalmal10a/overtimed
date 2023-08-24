@@ -1,10 +1,9 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:overtimed/controllers/user_authentication.dart';
+import 'package:overtimed/helpers/storage_helper.dart';
+import '/helpers/form_helper.dart';
 import '/controllers/global_controller.dart';
 import '/selectedIndex.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -12,23 +11,29 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 class AddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final overtimeProjectName = TextEditingController(text: '');
-
     // TimeOfDay currentTime = TimeOfDay.now();
-    final Rx<DateTime?> startTime =
-        DateTime.now().subtract(Duration(hours: 1)).obs;
-    final Rx<DateTime?> endTime = DateTime.now().obs;
 
     void addItemToFirestore(Map<String, dynamic> item) async {
       try {
-        var collectionName = 'trash';
-        if (authUser.isDefinedAndNotNull) {
-          collectionName = "${authUser.displayName}_${authUser.id}";
-        }
-        CollectionReference items =
-            FirebaseFirestore.instance.collection(collectionName);
+        var collectionName =
+            localStorage.getString('collection-name') ?? 'trash';
 
-        await items.add(item);
+        // if (authUser.isDefinedAndNotNull) {
+        //   collectionName = "${authUser?.displayName}_${authUser?.id}";
+        // } else {}
+        if (documentId.value!.isEmpty) {
+          print('is empty');
+          CollectionReference items =
+              FirebaseFirestore.instance.collection(collectionName);
+          await items.add(item);
+        } else {
+          print('else');
+          DocumentReference doc = FirebaseFirestore.instance
+              .collection(collectionName)
+              .doc(documentId.value);
+          doc.set(item);
+        }
+        documentId.value = '';
       } catch (e) {
         ('error is $e');
       }
@@ -43,7 +48,7 @@ class AddPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: overtimeProjectName,
+                  controller: overtimeProjectName.value,
                   decoration: InputDecoration(
                     label: Text('Project name'),
                   ),
@@ -113,22 +118,17 @@ class AddPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       String? message = null;
-                      if (overtimeProjectName.text.isEmpty) {
+                      if (overtimeProjectName.value.text.isEmpty) {
                         message = 'Enter project name';
                       }
 
                       if (message != null) {
                         showToast(context, message);
-
                         return;
                       }
 
-                      // var item = {
-                      //   'name': overtimeProjectName.text,
-                      //   'date': selectedDate.value,
-                      // };
                       var item = {
-                        'name': overtimeProjectName.text,
+                        'name': overtimeProjectName.value.text,
                         'date': DateTime.now(),
                         'start_time': startTime.value,
                         'end_time': endTime.value,

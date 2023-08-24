@@ -10,7 +10,7 @@ final folderMime = "application/vnd.google-apps.folder";
 late DriveApi driveApi;
 late sheets.SheetsApi sheetsApi;
 late GoogleSignIn signIn;
-late GoogleSignInAccount authUser;
+late GoogleSignInAccount? authUser;
 
 class _GoogleAuthClient extends http.BaseClient {
   final Map<String, String> _headers;

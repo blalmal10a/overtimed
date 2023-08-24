@@ -50,6 +50,7 @@ dependencies:
   googleapis_auth: ^1.4.1
   googleapis: ^11.4.0
   omni_datetime_picker: ^1.0.8
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
