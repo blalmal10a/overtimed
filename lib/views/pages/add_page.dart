@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:overtimed/helpers/storage_helper.dart';
 import '/helpers/form_helper.dart';
 import '/controllers/global_controller.dart';
-import '/selectedIndex.dart';
+import '../../helpers/selectedIndex.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class AddPage extends StatelessWidget {

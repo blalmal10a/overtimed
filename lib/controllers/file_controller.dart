@@ -23,7 +23,7 @@ Future<List<String>> getFileIdFromName(String fileName) async {
   );
 
   List<String> result = List.empty(growable: true);
-  if (search.files == null || search.files!.length == 0) {
+  if (search.files == null || search.files!.isEmpty) {
     throw "File not found";
   } else {
     search.files!.forEach((file) => result.add(file.id!));
@@ -49,7 +49,7 @@ Future<void> insertIntoFile() async {
 
   await sheetsApi.spreadsheets.values.update(
     valueRange,
-    spreadsheetId,
+    spreadsheetId.value ?? '',
     range,
     valueInputOption: 'RAW', // Use 'USER_ENTERED' for formatted input
   );
@@ -59,11 +59,12 @@ Future<void> insertIntoFile() async {
 
 Future<String> retrieveAndPrintSheetContent() async {
   try {
-    final spreadsheet = await sheetsApi.spreadsheets.get(spreadsheetId);
+    final spreadsheet =
+        await sheetsApi.spreadsheets.get(spreadsheetId.value ?? '');
     final sheet = spreadsheet.sheets![0];
     final String sheetTitle = sheet.properties!.title ?? '';
-    final values =
-        await sheetsApi.spreadsheets.values.get(spreadsheetId, sheetTitle);
+    final values = await sheetsApi.spreadsheets.values
+        .get(spreadsheetId.value ?? '', sheetTitle);
 
     final valueValues = values.values;
     if (valueValues != null) {
@@ -153,7 +154,7 @@ Future<void> createMoreSheet() async {
         }
       ]
     }),
-    spreadsheetId,
+    spreadsheetId.value ?? '',
   );
 }
 
@@ -162,7 +163,7 @@ Future<dynamic> getLastDataRow() async {
     final range = "'August 2023'!A:A"; // Range covering all rows in A column
 
     final response = await sheetsApi.spreadsheets.values.get(
-      spreadsheetId,
+      spreadsheetId.value ?? '',
       range,
     );
 
@@ -194,7 +195,8 @@ Future<int?> getSheetIdBySheetName(String? sheetName) async {
     if (sheetName.isNull) {
       sheetName = 'August 2023';
     }
-    final spreadsheet = await sheetsApi.spreadsheets.get(spreadsheetId);
+    final spreadsheet =
+        await sheetsApi.spreadsheets.get(spreadsheetId.value ?? '');
     final sheetsList = spreadsheet.sheets;
 
     if (sheetsList!.isNotEmpty) {
@@ -232,14 +234,14 @@ Future<void> deleteRowAndShiftRowsUp(int rowToDelete) async {
 
     // await sheetsApi.spreadsheets.batchUpdate(
     //   sheets.BatchUpdateSpreadsheetRequest.fromJson({'requests': requests}),
-    //   spreadsheetId,
+    //   spreadsheetId.value ?? '',
     // );
     final batchUpdateRequest = sheets.BatchUpdateSpreadsheetRequest()
       ..requests = requests;
 
     await sheetsApi.spreadsheets.batchUpdate(
       batchUpdateRequest,
-      spreadsheetId,
+      spreadsheetId.value ?? '',
     );
 
     print('Row $rowToDelete deleted and rows shifted up.');

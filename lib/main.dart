@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:overtimed/helpers/authentication_helper.dart';
-import 'package:overtimed/views/authenticated_view.dart';
-import '/views/unauthenticated_view.dart';
-import 'firebase_options.dart';
+import '/views/modules/authenticated_view.dart';
+import '/views/modules/unauthenticated_view.dart';
+import 'helpers/firebase/firebase_options.dart';
 import 'helpers/storage_helper.dart';
 
 void main() async {

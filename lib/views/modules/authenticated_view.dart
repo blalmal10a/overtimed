@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:overtimed/controllers/user_authentication.dart';
 import 'package:overtimed/helpers/authentication_helper.dart';
-import '/selectedIndex.dart';
+// import '../helpers/selectedIndex.dart';
+import '/helpers/selectedIndex.dart';
 import '/views/pages/home_page.dart';
 import '/views/pages/add_page.dart';
 

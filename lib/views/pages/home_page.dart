@@ -1,10 +1,11 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 import 'package:overtimed/helpers/form_helper.dart';
 import 'package:overtimed/helpers/storage_helper.dart';
-import 'package:overtimed/selectedIndex.dart';
+import 'package:overtimed/helpers/selectedIndex.dart';
 
 class HomePage extends StatelessWidget {
   final isTrashed;
@@ -12,7 +13,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    documentId.value = '';
     final now = DateTime.now();
     final year = now.year;
     final nthMonth = 8; //august
@@ -30,12 +30,6 @@ class HomePage extends StatelessWidget {
       }
     }
 
-    // if (authUser.isDefinedAndNotNull && isTrashed != true) {
-    //   collectionName = "${authUser?.displayName}_${authUser?.id}";
-    //   setCollectionName();
-    // } else {
-    //   collectionName = localStorage.getString('collection-name') ?? 'trash';
-    // }
     collectionName = localStorage.getString('collection-name') ?? 'trash';
 
     return StreamBuilder<QuerySnapshot>(
@@ -69,36 +63,54 @@ class HomePage extends StatelessWidget {
                 final document = documents[index];
                 final data = documents[index].data() as Map<String, dynamic>;
                 final name = data['name'] ?? '';
-                final dateTimestamp = data['date'] as Timestamp;
+                // final dateTimestamp = data['date'] as Timestamp;
                 final startTimestamp = data['start_time'] as Timestamp;
                 final endTimestamp = data['end_time'] as Timestamp;
-                final dateDateTime = dateTimestamp.toDate();
-                final monthDate = DateFormat('d MMM').format(dateDateTime);
                 final startDateTime = startTimestamp.toDate();
                 final endDateTime = endTimestamp.toDate();
+                final monthDate = DateFormat('d MMM').format(startDateTime);
                 final startFormatted = DateFormat.jm().format(startDateTime);
                 final endFormatted = DateFormat.jm().format(endDateTime);
                 return ListTile(
-                  trailing: IconButton(
-                    onPressed: () {
-                      try {
-                        print(document.id);
-                        documentId.value = document.id;
-                        endTime.value = data['end_time'].toDate();
-                        startTime.value = data['start_time'].toDate();
-                        overtimeProjectName.value.text = data['name'];
-
-                        selectedIndex.state.value = 2;
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                    icon: Icon(Icons.edit),
-                    color: Colors.blueGrey,
-                  ),
                   title: Text(name),
                   subtitle:
                       Text('$monthDate, $startFormatted to $endFormatted'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          try {
+                            print(document.id);
+                            documentId.value = document.id;
+                            endTime.value = data['end_time'].toDate();
+                            startTime.value = data['start_time'].toDate();
+                            overtimeProjectName.value.text = data['name'];
+
+                            selectedIndex.state.value = 2;
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                        icon: Icon(Icons.edit),
+                        color: Colors.blueGrey,
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          try {
+                            documentId.value = document.id;
+                            print(document.id);
+                            projectName.value = data['name'];
+                            _dialogBuilder(context);
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                        icon: Icon(Icons.delete),
+                        color: Colors.redAccent,
+                      )
+                    ],
+                  ),
                 );
               },
             ),
@@ -107,4 +119,40 @@ class HomePage extends StatelessWidget {
       },
     );
   }
+}
+
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      final String deleteItem = projectName.value ?? 'the selected item';
+
+      return AlertDialog(
+        title: const Text('Confirm delete'),
+        content: Text(
+          'Are you sure you want to delete `$deleteItem`',
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Confirm'),
+            onPressed: () {
+              onConfirmDelete();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
