@@ -26,8 +26,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Obx(() =>
-          is_authenticated.value ? AuthenticatedView() : UnauthenticatedView()),
+      home: Obx(
+        () => is_authenticated.value
+            ? AuthenticatedView()
+            : UnauthenticatedView(),
+      ),
     );
   }
 }

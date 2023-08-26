@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:overtimed/controllers/user_authentication.dart';
 import 'package:overtimed/helpers/authentication_helper.dart';
+import 'package:overtimed/views/pages/sheet_page.dart';
 // import '../helpers/selectedIndex.dart';
 import '/helpers/selectedIndex.dart';
 import '/views/pages/home_page.dart';
@@ -12,6 +13,7 @@ class AuthenticatedView extends StatelessWidget {
     HomePage(),
     HomePage(isTrashed: true),
     AddPage(),
+    SheetPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,8 +34,8 @@ class AuthenticatedView extends StatelessWidget {
           Obx(() => NavigationRail(
                 selectedIndex: selectedIndex.state.value,
                 onDestinationSelected: _onItemTapped,
-                labelType: NavigationRailLabelType.selected,
-                destinations: [
+                labelType: NavigationRailLabelType.all,
+                destinations: const [
                   NavigationRailDestination(
                     icon: Icon(Icons.home),
                     label: Text('Home'),
@@ -45,6 +47,10 @@ class AuthenticatedView extends StatelessWidget {
                   NavigationRailDestination(
                     icon: Icon(Icons.add),
                     label: Text('Add'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.table_chart_outlined),
+                    label: Text('Sheets'),
                   ),
                 ],
                 trailing: Expanded(

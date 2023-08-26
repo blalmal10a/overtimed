@@ -51,6 +51,7 @@ dependencies:
   googleapis: ^11.4.0
   omni_datetime_picker: ^1.0.8
   shared_preferences: ^2.2.0
+  firebase_auth: ^4.8.0
 
 dev_dependencies:
   flutter_test:
