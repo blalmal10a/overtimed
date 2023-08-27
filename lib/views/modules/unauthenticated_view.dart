@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:overtimed/controllers/firebase_authentication/firebase_authentication_controller.dart';
-import 'package:overtimed/helpers/authentication_helper.dart';
+import '/controllers/firebase_authentication/firebase_authentication_controller.dart';
+import '/helpers/authentication_helper.dart';
 
 import '/controllers/user_authentication.dart';
 

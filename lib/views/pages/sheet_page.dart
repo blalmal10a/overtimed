@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:overtimed/controllers/employee_sheet/employee_sheet_controller.dart';
-import 'package:overtimed/controllers/firebase_authentication/firebase_authentication_controller.dart';
-import 'package:overtimed/helpers/storage_helper.dart';
+import '/controllers/employee_sheet/employee_sheet_controller.dart';
+import '/controllers/firebase_authentication/firebase_authentication_controller.dart';
+import '/helpers/storage_helper.dart';
 
 class SheetPage extends StatelessWidget {
   const SheetPage({super.key});

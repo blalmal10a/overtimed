@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-import 'package:overtimed/helpers/authentication_helper.dart';
+import '/helpers/authentication_helper.dart';
 import '/views/modules/authenticated_view.dart';
 import '/views/modules/unauthenticated_view.dart';
 import 'helpers/firebase/firebase_options.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:overtimed/controllers/user_authentication.dart';
-import 'package:overtimed/helpers/authentication_helper.dart';
-import 'package:overtimed/views/pages/sheet_page.dart';
+import '/controllers/user_authentication.dart';
+import '/helpers/authentication_helper.dart';
+import '/views/pages/sheet_page.dart';
 // import '../helpers/selectedIndex.dart';
 import '/helpers/selectedIndex.dart';
 import '/views/pages/home_page.dart';

@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:overtimed/helpers/form_helper.dart';
-import 'package:overtimed/helpers/storage_helper.dart';
-import 'package:overtimed/helpers/selectedIndex.dart';
+import '/helpers/form_helper.dart';
+import '/helpers/storage_helper.dart';
+import '/helpers/selectedIndex.dart';
 
 class HomePage extends StatelessWidget {
   final isTrashed;

@@ -3,7 +3,7 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:googleapis/sheets/v4.dart' as sheets;
-import 'package:overtimed/helpers/authentication_helper.dart';
+import '/helpers/authentication_helper.dart';
 
 final fileMime = "application/vnd.google-apps.file";
 final folderMime = "application/vnd.google-apps.folder";

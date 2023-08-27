@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:overtimed/helpers/storage_helper.dart';
+import '/helpers/storage_helper.dart';
 
 Rx<TextEditingController> adminEmail =
     TextEditingController(text: 'malsawma7777@gmail.com').obs;
