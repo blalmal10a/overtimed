@@ -1,7 +1,7 @@
 import '/controllers/user_authentication.dart';
 import '/helpers/spreadsheet_helper.dart';
 import 'package:googleapis/drive/v3.dart';
-import 'dart:js_interop';
+
 import 'package:googleapis/sheets/v4.dart' as sheets;
 
 String getFileIdFromUrl(url) {
@@ -192,7 +192,7 @@ Future<dynamic> getLastDataRow() async {
 
 Future<int?> getSheetIdBySheetName(String? sheetName) async {
   try {
-    if (sheetName.isNull) {
+    if (sheetName == null) {
       sheetName = 'August 2023';
     }
     final spreadsheet =

@@ -147,8 +147,9 @@ Future<void> _dialogBuilder(BuildContext context) {
               textStyle: Theme.of(context).textTheme.labelLarge,
             ),
             child: const Text('Confirm'),
-            onPressed: () {
-              onConfirmDelete();
+            onPressed: () async {
+              await onConfirmDelete();
+              Navigator.of(context).pop();
             },
           ),
         ],

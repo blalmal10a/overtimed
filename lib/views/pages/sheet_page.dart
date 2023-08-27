@@ -2,16 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/deploymentmanager/v2.dart';
 import '/controllers/employee_sheet/employee_sheet_controller.dart';
 import '/controllers/firebase_authentication/firebase_authentication_controller.dart';
 import '/helpers/storage_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SheetPage extends StatelessWidget {
   const SheetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    getEmployees();
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         // Container(
@@ -29,39 +31,68 @@ class SheetPage extends StatelessWidget {
         //   ),
         // ),
         Expanded(
-            child: Obx(() => ListView.builder(
-                  itemCount: employeeList.length,
-                  itemBuilder: (context, index) {
-                    var data = employeeList[index].data();
-                    return ListTile(
-                      onTap: () => {
-                        print(data),
-                      },
-                      title: Text(data['name']),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          data['sheetId'] == null
-                              ? IconButton(
-                                  icon: Icon(Icons.edit),
-                                  color: Colors.blue,
-                                  onPressed: () => {},
-                                )
-                              : IconButton(
-                                  icon: Icon(Icons.add_to_photos),
-                                  color: Colors.blue,
-                                  onPressed: () => {},
-                                ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            color: Colors.redAccent,
-                            onPressed: () => {},
-                          )
-                        ],
-                      ),
-                    );
+            child: Container(
+          margin: EdgeInsets.only(top: 20),
+          alignment: Alignment.center,
+          width: min(400, screenWidth),
+          child: Obx(
+            () => ListView.builder(
+              itemCount: employeeList.length,
+              itemBuilder: (context, index) {
+                var data = employeeList[index].data() as Map;
+                return ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  onTap: () {
+                    selectedEmployee.value = data;
+
+                    sheetLink.value.text = data['sheet_link'] ?? '';
+                    _openSheetForm(context);
+                    // updateEmployee();
                   },
-                )))
+                  title: Text(data['name']),
+                  // trailing:
+                  //  IconButton(
+                  //   icon: Icon(Icons.delete),
+                  //   color: Colors.redAccent,
+                  //   onPressed: () => {},
+                  // )
+                  leading: Icon(
+                    Icons.manage_accounts,
+                    color: Colors.green,
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.call_made),
+                        color: Colors.blue,
+                        onPressed: () async {
+                          final url = Uri.parse(data['sheet_link']);
+
+                          print('url is $url');
+                          try {
+                            await launchUrl(url);
+                          } catch (e) {
+                            print(e);
+                          }
+                          // if (await canLaunchUrl(url)) {
+                          // } else
+                          //   print("couldn't launch URL");
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        color: Colors.redAccent,
+                        onPressed: () => {},
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        )),
       ],
     );
   }
@@ -75,7 +106,7 @@ Future<void> _openSheetForm(BuildContext context) async {
       return Dialog(
         backgroundColor: Colors.transparent,
         child: Container(
-            width: min(screenWidth, 400),
+            width: screenWidth,
             child: Column(
               children: [
                 Title(
@@ -89,9 +120,26 @@ Future<void> _openSheetForm(BuildContext context) async {
                           topRight: Radius.circular(10)),
                       color: Colors.green,
                     ),
-                    child: Text(
-                      'ADD NEW SHEET',
-                      style: TextStyle(color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Assign sheet to ' + selectedEmployee['name'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.green)),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
@@ -115,9 +163,7 @@ Future<void> _openSheetForm(BuildContext context) async {
                           alignment: Alignment.bottomRight,
                           child: ElevatedButton(
                             onPressed: () {
-                              adminEmail.value.text = 'malsawma7777@gmail.com';
-                              adminPassword.value.text = 'arpuisente';
-                              adminLogin();
+                              updateEmployee();
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,

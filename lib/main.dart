@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:overtimed/controllers/employee_sheet/employee_sheet_controller.dart';
 import '/helpers/authentication_helper.dart';
 import '/views/modules/authenticated_view.dart';
 import '/views/modules/unauthenticated_view.dart';
@@ -10,10 +11,12 @@ import 'helpers/storage_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initStorage();
+
   final firebasedata = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform);
   try {
     // await authenticateUser();
+    getEmployees();
   } catch (e) {}
   is_authenticated.value = true;
 
