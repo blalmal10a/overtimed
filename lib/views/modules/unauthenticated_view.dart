@@ -21,15 +21,22 @@ class UnauthenticatedView extends StatelessWidget {
         title: Text('Project overtime record'),
       ),
       body: Center(
-        child: Obx(() => showAdmin.value
-            ? AdminLoginpage()
-            : ElevatedButton(
-                onPressed: () => handleAuthentiation(),
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text('Sign in with GOOGLE'),
-                ),
-              )),
+        // child: Obx(() => showAdmin.value
+        //     ? AdminLoginpage()
+        //     : ElevatedButton(
+        //         onPressed: () => handleAuthentiation(),
+        //         child: Padding(
+        //           padding: EdgeInsets.all(10),
+        //           child: Text('Sign in with GOOGLE'),
+        //         ),
+        //       )),
+        child: ElevatedButton(
+          onPressed: () => handleAuthentiation(),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text('Sign in with GOOGLE'),
+          ),
+        ),
       ),
       floatingActionButton: TextButton(
           onPressed: () => showAdmin.value = !showAdmin.value,

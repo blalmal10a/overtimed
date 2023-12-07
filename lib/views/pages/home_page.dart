@@ -15,7 +15,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final year = now.year;
-    final nthMonth = 8; //august
+    final nthMonth = DateTime.now().month;
+    ; //august
 
     final startOfMonth = DateTime(year, nthMonth, 1);
     final endOfMonth =
