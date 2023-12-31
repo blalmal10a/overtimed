@@ -23,19 +23,11 @@ class HomePage extends StatelessWidget {
         DateTime(year, nthMonth + 1, 1).subtract(Duration(days: 1));
     var collectionName = 'trash';
 
-    void setCollectionName() async {
-      if (collectionName.isNotEmpty) {
-        var asdf = localStorage.setString('collection-name', collectionName);
-      } else {
-        collectionName = localStorage.getString('collection-name') ?? 'trash';
-      }
-    }
-
     collectionName = localStorage.getString('collection-name') ?? 'trash';
 
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection(collectionName)
+          .collection(this.isTrashed == null ? collectionName : 'trash')
           // .where('date',
           //     isGreaterThanOrEqualTo: startOfMonth,
           //     isLessThanOrEqualTo: endOfMonth)

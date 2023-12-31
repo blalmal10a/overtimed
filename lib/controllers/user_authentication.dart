@@ -3,6 +3,7 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:googleapis/sheets/v4.dart' as sheets;
+import 'package:overtimed/helpers/storage_helper.dart';
 import '/helpers/authentication_helper.dart';
 
 final fileMime = "application/vnd.google-apps.file";
@@ -38,6 +39,8 @@ Future<Map<String, dynamic>> authenticateUser() async {
     throw Exception("Account authentication failed");
   }
   authUser = account;
+  var collectionName = '${account.displayName}_${account.id}';
+  localStorage.setString('collection-name', collectionName);
   is_authenticated.value = true;
 
   driveApi = DriveApi(_GoogleAuthClient(await account.authHeaders));
