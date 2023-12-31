@@ -36,10 +36,11 @@ class HomePage extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection(collectionName)
-          .where('date',
-              isGreaterThanOrEqualTo: startOfMonth,
-              isLessThanOrEqualTo: endOfMonth)
+          // .where('date',
+          //     isGreaterThanOrEqualTo: startOfMonth,
+          //     isLessThanOrEqualTo: endOfMonth)
           .orderBy('date', descending: true)
+          .limit(50)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
