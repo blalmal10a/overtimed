@@ -1,6 +1,6 @@
 # overtimed
 
-A new Flutter project.
+Overtimed working hours maintenance.
 
 ## Getting Started
 
